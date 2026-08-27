@@ -3,3 +3,6 @@ He brushes his teeth.
 He takes a bath.
 He has breakfast.
 Then he watched Youtube
+He goes to class.
+He listens to the lecturer.
+He learns about Git..
