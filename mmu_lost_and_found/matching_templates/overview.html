@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}Overview{% endblock %}
+
+{% block content %}
+
+<div class="page-head">
+
+    <h1>MMU Lost & Found Overview</h1>
+
+    <p>
+        View the latest lost and found item information and manage claims.
+    </p>
+
+</div>
+
+
+<div class="form-grid">
+
+    <div class="panel">
+
+        <h2>Lost Items</h2>
+
+        <h1>{{ stats["lost"] }}</h1>
+
+        <p>
+            Items currently reported as lost.
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+        <h2>Found Items</h2>
+
+        <h1>{{ stats["found"] }}</h1>
+
+        <p>
+            Items currently marked as found.
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+        <h2>Claimed Items</h2>
+
+        <h1>{{ stats["claimed"] }}</h1>
+
+        <p>
+            Found items that have been claimed.
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+        <h2>Pending Claims</h2>
+
+        <h1>{{ stats["pending"] }}</h1>
+
+        <p>
+            Claims waiting for review.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="panel">
+
+    <h2>Quick Search</h2>
+
+    <form
+        method="GET"
+        action="{{ url_for('matching.lost_items') }}"
+    >
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search lost items..."
+        >
+
+        <br><br>
+
+        <button
+            type="submit"
+            class="btn"
+        >
+            Search Lost Items
+        </button>
+
+    </form>
+
+</div>
+
+
+<div class="panel">
+
+    <h2>Recent Reports</h2>
+
+
+    {% for item in recent %}
+
+    <div class="item">
+
+        <h3>
+
+            {{ item["item_name"] }}
+
+            <span class="badge {{ item['status'] }}">
+                {{ item["status"] }}
+            </span>
+
+        </h3>
+
+
+        <p class="meta">
+
+            {{ item["kind"] }}
+
+            &nbsp;|&nbsp;
+
+            {{ item["category"] }}
+
+            &nbsp;|&nbsp;
+
+            {{ item["location"] }}
+
+            &nbsp;|&nbsp;
+
+            {{ item["date"] }}
+
+        </p>
+
+    </div>
+
+    {% else %}
+
+    <div class="empty">
+
+        <h3>
+            No recent reports
+        </h3>
+
+        <p>
+            No lost or found items have been reported yet.
+        </p>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+
+<div class="panel">
+
+    <h2>Quick Links</h2>
+
+    <br>
+
+    <a
+        href="{{ url_for('matching.lost_items') }}"
+        class="btn"
+    >
+        Lost Items
+    </a>
+
+    <a
+        href="{{ url_for('matching.view_matches') }}"
+        class="btn"
+    >
+        Possible Matches
+    </a>
+
+    <a
+        href="{{ url_for('matching.manage_claims') }}"
+        class="btn"
+    >
+        Manage Claims
+    </a>
+
+</div>
+
+{% endblock %}

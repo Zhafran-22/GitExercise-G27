@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Claims{% endblock %}
+
+{% block content %}
+
+<div class="page-head">
+
+    <h1>Claim Requests</h1>
+
+    <p>
+        Accepting a claim marks the found item as Claimed and rejects any other
+        pending claims for the same item.
+    </p>
+
+</div>
+
+
+{% for claim in claims %}
+
+<div class="item">
+
+    <div class="item-row">
+
+        <div>
+
+            <h3>
+
+                {{ claim["item_name"] }}
+
+                <span class="badge {{ claim['status'] }}">
+                    {{ claim["status"] }}
+                </span>
+
+            </h3>
+
+
+            <p>
+
+                <strong>
+                    {{ claim["claimant_name"] }}
+                </strong>
+
+                ({{ claim["claimant_email"] }})
+
+            </p>
+
+
+            {% if claim["message"] %}
+
+            <p class="meta">
+                "{{ claim["message"] }}"
+            </p>
+
+            {% endif %}
+
+
+            <p class="meta">
+
+                {{ claim["category"] }}
+
+                &nbsp;|&nbsp;
+
+                Found at {{ claim["location"] }}
+
+            </p>
+
+        </div>
+
+
+        {% if claim["status"] == "Pending" %}
+
+        <div style="display: flex; gap: 8px;">
+
+            <form
+                method="POST"
+                action="{{ url_for('matching.process_claim', claim_id=claim['id'], decision='accept') }}"
+            >
+
+                <button
+                    type="submit"
+                    class="btn small green"
+                >
+                    Accept
+                </button>
+
+            </form>
+
+
+            <form
+                method="POST"
+                action="{{ url_for('matching.process_claim', claim_id=claim['id'], decision='reject') }}"
+                onsubmit="return confirm('Reject this claim?');"
+            >
+
+                <button
+                    type="submit"
+                    class="btn small"
+                >
+                    Reject
+                </button>
+
+            </form>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% else %}
+
+<div class="empty">
+
+    <h3>
+        No claim requests yet
+    </h3>
+
+    <p>
+        Claims appear here after someone claims a found item.
+    </p>
+
+</div>
+
+{% endfor %}
+
+{% endblock %}

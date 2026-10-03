@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block title %}Possible Matches{% endblock %}
+
+{% block content %}
+
+<div class="page-head">
+
+    <h1>Possible Matches</h1>
+
+    <p>
+        The system compares lost and found items using the item name,
+        category and location.
+    </p>
+
+</div>
+
+
+{% for result in results %}
+
+<div class="panel">
+
+    <h2>
+        Lost Item: {{ result["lost"]["item_name"] }}
+    </h2>
+
+    <p>
+        {{ result["lost"]["description"] }}
+    </p>
+
+    <p class="meta">
+
+        {{ result["lost"]["category"] }}
+
+        &nbsp;|&nbsp;
+
+        Lost at {{ result["lost"]["location"] }}
+
+        &nbsp;|&nbsp;
+
+        {{ result["lost"]["date"] }}
+
+    </p>
+
+
+    <br>
+
+
+    {% if result["matches"] %}
+
+        <h3>Possible Found Items</h3>
+
+        <br>
+
+        {% for match in result["matches"] %}
+
+        <div class="item">
+
+            <div class="item-row">
+
+                <div>
+
+                    <h3>
+
+                        {{ match["item"]["item_name"] }}
+
+                        <span class="badge {{ match['item']['status'] }}">
+                            {{ match["item"]["status"] }}
+                        </span>
+
+                    </h3>
+
+
+                    <p>
+                        {{ match["item"]["description"] }}
+                    </p>
+
+
+                    <p class="meta">
+
+                        {{ match["item"]["category"] }}
+
+                        &nbsp;|&nbsp;
+
+                        Found at {{ match["item"]["location"] }}
+
+                        &nbsp;|&nbsp;
+
+                        {{ match["item"]["date"] }}
+
+                    </p>
+
+
+                    <p class="meta">
+
+                        Match confidence:
+                        <strong>
+                            {{ match["confidence"] }}%
+                        </strong>
+
+                    </p>
+
+
+                    {% if match["item"]["status"] == "Found" %}
+
+                    <br>
+
+                    <a
+                        href="{{ url_for('matching.submit_claim', found_id=match['item']['id']) }}"
+                        class="btn small"
+                    >
+                        Claim this item
+                    </a>
+
+                    {% endif %}
+
+                </div>
+
+
+                {% if match["item"]["image"] %}
+
+                <img
+                    class="thumb"
+                    src="{{ url_for('static', filename='uploads/' + match['item']['image']) }}"
+                    alt="Found item image"
+                >
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+
+    {% else %}
+
+        <div class="empty">
+
+            <h3>
+                No possible matches found
+            </h3>
+
+            <p>
+                No found items currently match this lost item above the
+                {{ threshold }}% confidence level.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% else %}
+
+<div class="empty">
+
+    <h3>
+        No lost items yet
+    </h3>
+
+    <p>
+        Report a lost item first to search for possible matches.
+    </p>
+
+</div>
+
+{% endfor %}
+
+
+<a
+    href="{{ url_for('matching.lost_items') }}"
+    class="btn ghost"
+>
+    Back to Lost Items
+</a>
+
+{% endblock %}

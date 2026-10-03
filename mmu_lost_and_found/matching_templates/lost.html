@@ -1,0 +1,357 @@
+{% extends "base.html" %}
+
+{% block title %}Lost Items{% endblock %}
+
+{% block content %}
+
+<div class="page-head">
+
+    <h1>Lost Items</h1>
+
+    <p>
+        Report a lost item and search through existing lost item reports.
+    </p>
+
+</div>
+
+
+<div class="panel" id="report">
+
+    <h2>Report Lost Item</h2>
+
+    <form
+        method="POST"
+        action="{{ url_for('matching.add_lost_item') }}"
+        enctype="multipart/form-data"
+    >
+
+        <div class="form-grid">
+
+            <div>
+
+                <label for="item_name">
+                    Item Name
+                </label>
+
+                <input
+                    type="text"
+                    id="item_name"
+                    name="item_name"
+                    required
+                >
+
+            </div>
+
+
+            <div>
+
+                <label for="category">
+                    Category
+                </label>
+
+                <select
+                    id="category"
+                    name="category"
+                    required
+                >
+
+                    <option value="">
+                        Select Category
+                    </option>
+
+                    {% for c in categories %}
+
+                    <option
+                        value="{{ c }}"
+                        {% if category == c %}selected{% endif %}
+                    >
+                        {{ c }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label for="location">
+                    Location
+                </label>
+
+                <input
+                    type="text"
+                    id="location"
+                    name="location"
+                    placeholder="Where did you lose it?"
+                    required
+                >
+
+            </div>
+
+
+            <div>
+
+                <label for="date">
+                    Date Lost
+                </label>
+
+                <input
+                    type="date"
+                    id="date"
+                    name="date"
+                    required
+                >
+
+            </div>
+
+
+            <div class="full">
+
+                <label for="description">
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    placeholder="Describe the item..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <div class="full">
+
+                <label for="image">
+                    Image
+                </label>
+
+                <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    accept="image/*"
+                >
+
+            </div>
+
+        </div>
+
+
+        <br>
+
+        <button
+            type="submit"
+            class="btn"
+        >
+            Report Lost Item
+        </button>
+
+    </form>
+
+</div>
+
+
+<div class="panel">
+
+    <h2>Search Lost Items</h2>
+
+    <form
+        method="GET"
+        action="{{ url_for('matching.lost_items') }}"
+    >
+
+        <div class="filter-grid">
+
+            <div>
+
+                <label for="search">
+                    Search
+                </label>
+
+                <input
+                    type="text"
+                    id="search"
+                    name="search"
+                    value="{{ search }}"
+                    placeholder="Search item name or description"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label for="filter_category">
+                    Category
+                </label>
+
+                <select
+                    id="filter_category"
+                    name="category"
+                >
+
+                    <option value="">
+                        All Categories
+                    </option>
+
+                    {% for c in categories %}
+
+                    <option
+                        value="{{ c }}"
+                        {% if category == c %}selected{% endif %}
+                    >
+                        {{ c }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label for="filter_location">
+                    Location
+                </label>
+
+                <input
+                    type="text"
+                    id="filter_location"
+                    name="location"
+                    value="{{ location }}"
+                    placeholder="Location"
+                >
+
+            </div>
+
+
+            <div>
+
+                <button
+                    type="submit"
+                    class="btn"
+                >
+                    Search
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+{% for item in items %}
+
+<div class="item">
+
+    <div class="item-row">
+
+        <div>
+
+            <h3>
+
+                {{ item["item_name"] }}
+
+                <span class="badge {{ item['status'] }}">
+                    {{ item["status"] }}
+                </span>
+
+            </h3>
+
+
+            <p>
+                {{ item["description"] }}
+            </p>
+
+
+            <p class="meta">
+
+                {{ item["category"] }}
+
+                &nbsp;|&nbsp;
+
+                Lost at {{ item["location"] }}
+
+                &nbsp;|&nbsp;
+
+                {{ item["date"] }}
+
+            </p>
+
+
+            <form
+                method="POST"
+                action="{{ url_for('matching.update_lost_status', item_id=item['id']) }}"
+                class="inline-form"
+            >
+
+                <select name="status">
+
+                    {% for s in statuses %}
+
+                    <option
+                        value="{{ s }}"
+                        {% if item["status"] == s %}selected{% endif %}
+                    >
+                        {{ s }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+
+                <button
+                    type="submit"
+                    class="btn small"
+                >
+                    Update Status
+                </button>
+
+            </form>
+
+        </div>
+
+
+        {% if item["image"] %}
+
+        <img
+            class="thumb"
+            src="{{ url_for('static', filename='uploads/' + item['image']) }}"
+            alt="Lost item image"
+        >
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+{% else %}
+
+<div class="empty">
+
+    <h3>
+        No lost items found
+    </h3>
+
+    <p>
+        There are currently no lost item reports matching your search.
+    </p>
+
+</div>
+
+{% endfor %}
+
+{% endblock %}

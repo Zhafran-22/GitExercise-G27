@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Lost Item - MMU Lost & Found</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <h1>Edit Lost Item</h1>
+
+    <form method="POST">
+
+        <label>Item Name:</label>
+        <br>
+        <input type="text" name="item_name"
+               value="{{ item['item_name'] }}" required>
+
+        <br><br>
+
+        <label>Description:</label>
+        <br>
+        <textarea name="description" required>{{ item['description'] }}</textarea>
+
+        <br><br>
+
+        <label>Category:</label>
+        <br>
+        <select name="category" required>
+            <option value="Electronics"
+                {% if item['category'] == 'Electronics' %}selected{% endif %}>
+                Electronics
+            </option>
+
+            <option value="Personal Items"
+                {% if item['category'] == 'Personal Items' %}selected{% endif %}>
+                Personal Items
+            </option>
+
+            <option value="Documents"
+                {% if item['category'] == 'Documents' %}selected{% endif %}>
+                Documents
+            </option>
+
+            <option value="Wallet"
+                {% if item['category'] == 'Wallet' %}selected{% endif %}>
+                Wallet
+            </option>
+
+            <option value="Other"
+                {% if item['category'] == 'Other' %}selected{% endif %}>
+                Other
+            </option>
+        </select>
+
+        <br><br>
+
+        <label>Location:</label>
+        <br>
+        <select name="location" required>
+            <option value="Faculty of Computing & Informatics (FCI)"
+                {% if item['location'] == 'Faculty of Computing & Informatics (FCI)' %}selected{% endif %}>
+                Faculty of Computing & Informatics (FCI)
+            </option>
+
+            <option value="Central Library"
+                {% if item['location'] == 'Central Library' %}selected{% endif %}>
+                Central Library
+            </option>
+
+            <option value="Cafeteria"
+                {% if item['location'] == 'Cafeteria' %}selected{% endif %}>
+                Cafeteria
+            </option>
+
+            <option value="Learning Point"
+                {% if item['location'] == 'Learning Point' %}selected{% endif %}>
+                Learning Point
+            </option>
+
+            <option value="Hostel"
+                {% if item['location'] == 'Hostel' %}selected{% endif %}>
+                Hostel
+            </option>
+
+            <option value="Classroom"
+                {% if item['location'] == 'Classroom' %}selected{% endif %}>
+                Classroom
+            </option>
+
+            <option value="Other"
+                {% if item['location'] == 'Other' %}selected{% endif %}>
+                Other
+            </option>
+        </select>
+
+        <br><br>
+
+        <label>Date Lost:</label>
+        <br>
+        <input type="date" name="date"
+               value="{{ item['date'] }}" required>
+
+        <br><br>
+
+        <button type="submit">Save Changes</button>
+
+    </form>
+
+    <br>
+
+    <a href="/lost-items">
+        <button>Cancel</button>
+    </a>
+
+</body>
+</html>

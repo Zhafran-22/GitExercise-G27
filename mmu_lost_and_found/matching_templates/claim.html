@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}Claim Item{% endblock %}
+
+{% block content %}
+
+<div class="page-head">
+
+    <h1>Claim This Item</h1>
+
+    <p>
+        Tell us who you are. The claim will be reviewed before the item is released.
+    </p>
+
+</div>
+
+
+<div class="item">
+
+    <div class="item-row">
+
+        <div>
+
+            <h3>
+                {{ item["item_name"] }}
+
+                <span class="badge {{ item['status'] }}">
+                    {{ item["status"] }}
+                </span>
+            </h3>
+
+            <p>
+                {{ item["description"] }}
+            </p>
+
+            <p class="meta">
+
+                {{ item["category"] }}
+
+                &nbsp;|&nbsp;
+
+                Found at {{ item["location"] }}
+
+                &nbsp;|&nbsp;
+
+                {{ item["date"] }}
+
+            </p>
+
+        </div>
+
+
+        {% if item["image"] %}
+
+        <img
+            class="thumb"
+            src="{{ url_for('static', filename='uploads/' + item['image']) }}"
+            alt="Found item image"
+        >
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<div class="panel">
+
+    <h2>Your Details</h2>
+
+    <form
+        method="POST"
+        action="{{ url_for('matching.submit_claim', found_id=item['id']) }}"
+    >
+
+        <div class="form-grid">
+
+            <div>
+
+                <label for="claimant_name">
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    id="claimant_name"
+                    name="claimant_name"
+                    value="{{ form.claimant_name }}"
+                    required
+                >
+
+            </div>
+
+
+            <div>
+
+                <label for="claimant_email">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    id="claimant_email"
+                    name="claimant_email"
+                    placeholder="name@student.mmu.edu.my"
+                    value="{{ form.claimant_email }}"
+                    required
+                >
+
+            </div>
+
+
+            <div class="full">
+
+                <label for="message">
+                    How can you prove it is yours? (optional)
+                </label>
+
+                <textarea
+                    id="message"
+                    name="message"
+                    maxlength="500"
+                    placeholder="Describe marks, contents, when and where you lost it..."
+                >{{ form.message }}</textarea>
+
+            </div>
+
+        </div>
+
+
+        <br>
+
+        <button
+            type="submit"
+            class="btn"
+        >
+            Submit Claim
+        </button>
+
+
+        <a
+            href="{{ url_for('matching.view_matches') }}"
+            class="btn ghost"
+        >
+            Back
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}

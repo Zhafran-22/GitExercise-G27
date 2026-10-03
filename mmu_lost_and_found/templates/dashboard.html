@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MMU Lost & Found Dashboard</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 75px;
+            background: #101a33;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            color: white;
+        }
+
+
+        .logo {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+
+            background: #e31b23;
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 19px;
+        }
+
+
+        .nav-text {
+            font-size: 14px;
+            color: #c8cfdd;
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            background: linear-gradient(
+                135deg,
+                #101a33,
+                #1c2d55
+            );
+
+            color: white;
+
+            padding: 65px 7% 80px;
+
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        .hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 350px;
+            height: 350px;
+
+            background: rgba(227, 27, 35, 0.12);
+
+            border-radius: 50%;
+
+            right: -100px;
+            top: -150px;
+        }
+
+
+        .hero-content {
+            max-width: 1100px;
+
+            margin: auto;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .hero h1 {
+            font-size: 42px;
+
+            margin-bottom: 15px;
+
+            font-weight: 800;
+        }
+
+
+        .hero h1 span {
+            color: #e31b23;
+        }
+
+
+        .hero p {
+            color: #d4d9e4;
+
+            font-size: 17px;
+
+            max-width: 600px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================
+           DASHBOARD
+        ========================= */
+
+        .container {
+            max-width: 1100px;
+
+            margin: -35px auto 60px;
+
+            padding: 0 20px;
+
+            position: relative;
+
+            z-index: 5;
+        }
+
+
+        .section-title {
+            margin-bottom: 22px;
+        }
+
+
+        .section-title h2 {
+            font-size: 24px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .section-title p {
+            color: #777;
+
+            font-size: 14px;
+        }
+
+
+        .dashboard {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 22px;
+        }
+
+
+        /* =========================
+           CARDS
+        ========================= */
+
+        .card {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.07);
+
+            border: 1px solid #edf0f5;
+
+            transition: all 0.3s ease;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        .card::before {
+            content: "";
+
+            position: absolute;
+
+            width: 5px;
+            height: 100%;
+
+            background: #e31b23;
+
+            left: 0;
+            top: 0;
+        }
+
+
+        .card:hover {
+            transform: translateY(-6px);
+
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, 0.12);
+        }
+
+
+        .icon {
+            width: 55px;
+            height: 55px;
+
+            border-radius: 14px;
+
+            background: #fff0f1;
+
+            color: #e31b23;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 23px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .card h2 {
+            font-size: 21px;
+
+            margin-bottom: 10px;
+
+            color: #172033;
+        }
+
+
+        .card p {
+            color: #697386;
+
+            line-height: 1.6;
+
+            min-height: 50px;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .button {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 12px 19px;
+
+            background: #e31b23;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 9px;
+
+            margin-top: 18px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition: 0.25s ease;
+        }
+
+
+        .button:hover {
+            background: #c9141b;
+
+            transform: translateX(3px);
+        }
+
+
+        .button i {
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            text-align: center;
+
+            padding: 25px;
+
+            color: #8992a3;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+
+            .nav-text {
+                display: none;
+            }
+
+
+            .hero {
+                padding: 50px 25px 75px;
+            }
+
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+
+            .hero p {
+                font-size: 15px;
+            }
+
+
+            .container {
+                margin-top: -30px;
+            }
+
+
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+
+            .card {
+                padding: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+            </div>
+
+            MMU Lost & Found
+
+        </div>
+
+
+        <div class="nav-text">
+
+            Multimedia University
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>
+
+                Lost something?
+
+                <span>Find it.</span>
+
+            </h1>
+
+
+            <p>
+
+                Welcome to the MMU Lost & Found Management System.
+
+                Report found items, search for belongings and manage
+                lost-and-found reports easily.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         DASHBOARD
+    ========================== -->
+
+    <main class="container">
+
+
+        <div class="section-title">
+
+            <h2>Dashboard</h2>
+
+            <p>
+                Choose an action below to manage lost and found items.
+            </p>
+
+        </div>
+
+
+
+        <div class="dashboard">
+
+
+            <!-- =========================
+                 REPORT FOUND ITEM
+            ========================== -->
+
+            <div class="card">
+
+                <div class="icon">
+
+                    <i class="fa-solid fa-hand-holding-heart"></i>
+
+                </div>
+
+
+                <h2>
+                    Report Found Item
+                </h2>
+
+
+                <p>
+
+                    Found something on the MMU campus?
+
+                    Report it so the owner can find it.
+
+                </p>
+
+
+                <!-- NEW LINK -->
+
+                <a href="{{ url_for('report_item') }}"
+                   class="button">
+
+                    Report Item
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- =========================
+                 VIEW FOUND ITEMS
+            ========================== -->
+
+            <div class="card">
+
+                <div class="icon">
+
+                    <i class="fa-solid fa-box-open"></i>
+
+                </div>
+
+
+                <h2>
+                    View Found Items
+                </h2>
+
+
+                <p>
+
+                    Browse items that have already been
+                    reported as found around campus.
+
+                </p>
+
+
+                <!-- NEW LINK -->
+
+                <a href="{{ url_for('found_items') }}"
+                   class="button">
+
+                    View Items
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- =========================
+                 SEARCH ITEMS
+            ========================== -->
+
+            <div class="card">
+
+                <div class="icon">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                </div>
+
+
+                <h2>
+                    Search Items
+                </h2>
+
+
+                <p>
+
+                    Search for an item using its name,
+                    category or location.
+
+                </p>
+
+
+                <!-- NEW LINK -->
+
+                <a href="{{ url_for('search_items') }}"
+                   class="button">
+
+                    Search
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- =========================
+                 MANAGE ITEMS
+            ========================== -->
+
+            <div class="card">
+
+                <div class="icon">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                </div>
+
+
+                <h2>
+                    Manage Items
+                </h2>
+
+
+                <p>
+
+                    Update item status or remove
+                    found-item reports from the system.
+
+                </p>
+
+
+                <!-- NEW LINK -->
+
+                <a href="{{ url_for('manage_items') }}"
+                   class="button">
+
+                    Manage Items
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        MMU Lost & Found Management System © 2026
+
+    </footer>
+
+
+</body>
+
+</html>

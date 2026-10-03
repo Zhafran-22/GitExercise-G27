@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Found Items</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        .navbar {
+            background: #101a33;
+            color: white;
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .top-buttons {
+            margin-bottom: 25px;
+        }
+
+        .button {
+            display: inline-block;
+            background: #e31b23;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .search-box {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.07);
+            margin-bottom: 30px;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 12px;
+        }
+
+        input,
+        select {
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        button {
+            background: #e31b23;
+            color: white;
+            border: none;
+            padding: 13px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .items {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,.07);
+        }
+
+        .item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .item-content {
+            padding: 20px;
+        }
+
+        .item h3 {
+            margin-top: 0;
+        }
+
+        .item p {
+            color: #697386;
+            font-size: 14px;
+        }
+
+        .status {
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 50px;
+            color: #777;
+        }
+
+        @media(max-width: 800px) {
+
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+
+            .items {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <strong>MMU Lost & Found</strong>
+
+        <a href="{{ url_for('dashboard') }}">
+            ← Dashboard
+        </a>
+
+    </div>
+
+
+    <div class="container">
+
+        <h1>Found Items</h1>
+
+        <p>Items that have been reported as found around campus.</p>
+
+
+        <div class="top-buttons">
+
+            <a class="button" href="{{ url_for('report_item') }}">
+                Report Found Item
+            </a>
+
+        </div>
+
+
+        <div class="search-box">
+
+            <form class="search-form"
+                  method="GET"
+                  action="{{ url_for('found_items') }}">
+
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Search item..."
+                    value="{{ search }}">
+
+                <select name="category">
+
+                    <option value="">All Categories</option>
+
+                    <option value="Wallet"
+                        {% if category == "Wallet" %}selected{% endif %}>
+                        Wallet
+                    </option>
+
+                    <option value="Phone"
+                        {% if category == "Phone" %}selected{% endif %}>
+                        Phone
+                    </option>
+
+                    <option value="Laptop"
+                        {% if category == "Laptop" %}selected{% endif %}>
+                        Laptop
+                    </option>
+
+                    <option value="Bag"
+                        {% if category == "Bag" %}selected{% endif %}>
+                        Bag
+                    </option>
+
+                    <option value="Keys"
+                        {% if category == "Keys" %}selected{% endif %}>
+                        Keys
+                    </option>
+
+                    <option value="Student Card"
+                        {% if category == "Student Card" %}selected{% endif %}>
+                        Student Card
+                    </option>
+
+                    <option value="Earphones"
+                        {% if category == "Earphones" %}selected{% endif %}>
+                        Earphones
+                    </option>
+
+                    <option value="Other"
+                        {% if category == "Other" %}selected{% endif %}>
+                        Other
+                    </option>
+
+                </select>
+
+
+                <input
+                    type="text"
+                    name="location"
+                    placeholder="Location..."
+                    value="{{ location }}">
+
+
+                <button type="submit">
+                    Search
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <div class="items">
+
+            {% for item in items %}
+
+            <div class="item">
+
+                {% if item["image"] %}
+
+                <img src="{{ url_for('static', filename='uploads/' + item['image']) }}">
+
+                {% endif %}
+
+
+                <div class="item-content">
+
+                    <h3>
+                        {{ item["item_name"] }}
+                    </h3>
+
+                    <p>
+                        {{ item["description"] }}
+                    </p>
+
+                    <p>
+                        <strong>Category:</strong>
+                        {{ item["category"] }}
+                    </p>
+
+                    <p>
+                        <strong>Location:</strong>
+                        {{ item["location"] }}
+                    </p>
+
+                    <p>
+                        <strong>Date:</strong>
+                        {{ item["date"] }}
+                    </p>
+
+                    <p class="status">
+                        Status: {{ item["status"] }}
+                    </p>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <div class="empty">
+
+                <h2>No found items</h2>
+
+                <p>No items have been reported yet.</p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

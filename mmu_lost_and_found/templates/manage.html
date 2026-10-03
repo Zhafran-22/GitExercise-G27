@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Manage Items</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        .navbar {
+            background: #101a33;
+            color: white;
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .item {
+            background: white;
+            padding: 22px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,.06);
+        }
+
+        .info h3 {
+            margin-top: 0;
+        }
+
+        .info p {
+            color: #697386;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        select {
+            padding: 10px;
+            border-radius: 7px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .update {
+            background: #2563eb;
+            color: white;
+        }
+
+        .delete {
+            background: #e31b23;
+            color: white;
+        }
+
+        @media(max-width: 700px) {
+
+            .item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .actions {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <strong>MMU Lost & Found</strong>
+
+        <a href="{{ url_for('dashboard') }}">
+            ← Dashboard
+        </a>
+
+    </div>
+
+
+    <div class="container">
+
+        <h1>Manage Found Items</h1>
+
+        <p>Update item status or remove reports.</p>
+
+
+        {% for item in items %}
+
+        <div class="item">
+
+            <div class="info">
+
+                <h3>
+                    {{ item["item_name"] }}
+                </h3>
+
+                <p>
+                    {{ item["description"] }}
+                </p>
+
+                <p>
+                    Location: {{ item["location"] }}
+                </p>
+
+                <p>
+                    Category: {{ item["category"] }}
+                </p>
+
+            </div>
+
+
+            <div class="actions">
+
+                <form
+                    method="POST"
+                    action="{{ url_for('update_found_status', item_id=item['id']) }}">
+
+                    <select name="status">
+
+                        <option value="Found"
+                            {% if item["status"] == "Found" %}selected{% endif %}>
+                            Found
+                        </option>
+
+                        <option value="Claimed"
+                            {% if item["status"] == "Claimed" %}selected{% endif %}>
+                            Claimed
+                        </option>
+
+                        <option value="Returned"
+                            {% if item["status"] == "Returned" %}selected{% endif %}>
+                            Returned
+                        </option>
+
+                    </select>
+
+                    <button class="update" type="submit">
+                        Update
+                    </button>
+
+                </form>
+
+
+                <form
+                    method="POST"
+                    action="{{ url_for('delete_found_item', item_id=item['id']) }}"
+                    onsubmit="return confirm('Delete this item?');">
+
+                    <button class="delete" type="submit">
+                        Delete
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        {% else %}
+
+        <p>No found items available.</p>
+
+        {% endfor %}
+
+    </div>
+
+</body>
+
+</html>

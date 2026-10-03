@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lost Items - MMU Lost & Found</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <h1>MMU Lost & Found</h1>
+
+    <h2>Lost Items</h2>
+
+    <a href="/report-lost">
+        <button>Report Lost Item</button>
+    </a>
+
+    <br><br>
+
+    {% if items %}
+
+        {% for item in items %}
+
+            <div class="item-card">
+
+                <h3>{{ item["item_name"] }}</h3>
+
+                <p>
+                    <strong>Category:</strong>
+                    {{ item["category"] }}
+                </p>
+
+                <p>
+                    <strong>Description:</strong>
+                    {{ item["description"] }}
+                </p>
+
+                <p>
+                    <strong>Location:</strong>
+                    {{ item["location"] }}
+                </p>
+
+                <p>
+                    <strong>Date:</strong>
+                    {{ item["date"] }}
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    {{ item["status"] }}
+                </p>
+
+                <a href="/edit-lost/{{ item['id'] }}">
+                    <button>Edit</button>
+                </a>
+
+                <a href="/delete-lost/{{ item['id'] }}">
+                    <button>Delete</button>
+                </a>
+
+            </div>
+
+            <br>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No lost items have been reported yet.</p>
+
+    {% endif %}
+
+</body>
+</html>
